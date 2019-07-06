@@ -8,22 +8,28 @@
  */
 class Solution {
    public:
-    void swapValue(ListNode* A, ListNode* B) {
-        int num = 0;
-        num = A->val;
-        A->val = B->val;
-        B->val = num;
-    }
     ListNode* swapPairs(ListNode* head) {
-        ListNode *temp, *current, *previous;
+        ListNode *temp, *current, *previous, *last;
         temp = head;
         previous = NULL;
         int index = 0;
         while (temp != NULL) {
             ++index;
             current = temp;
-            if (previous != NULL && current != NULL && index % 2 == 0) {
-                swapValue(previous, current);
+            last = temp->next;
+            if (current != NULL && last != NULL && index & 1) {
+                if (previous != NULL) {
+                    //printf("index %d previous %d current %d last %d\n", index, previous->val, current->val, last->val);
+                    previous->next = last;
+                    current->next = last->next;
+                    last->next = current;
+                    temp = last;
+                } else {
+                    current->next = last->next;
+                    last->next = current;
+                    temp = last;
+                    head = last;
+                }
             }
             previous = temp;
             temp = temp->next;
